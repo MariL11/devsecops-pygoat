@@ -1,6 +1,6 @@
 name: CI
 
-on: [Push]
+on: [push]
 
 jobs:
   sast_scan:
