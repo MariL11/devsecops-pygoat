@@ -11,7 +11,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
-    - name: Set uo Python
+    - name: Set ou Python
       uses: actions/setup-pyhton@v2
       with:
         python-version: 3.8
