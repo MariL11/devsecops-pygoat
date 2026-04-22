@@ -75,6 +75,6 @@ jobs:
           python-version: 3.11
 
       - name: Run Semgrep
-        run: semgrep scan --severity=ERROR --severity WARNING --sarif --output=sast-semgrep.sarif || true
+        run: semgrep scan --severity=ERROR --severity WARNING --sarif --output=sast-semgrep.sarif || true 
 
    
