@@ -18,20 +18,8 @@ jobs:
         with:
           python-version: 3.13
 
-      - name: Install Bandit and SARIF formatter
-        run: |
-          pip install bandit
-          pip install bandit-sarif-formatter
-
       - name: Run Bandit Scan
         run: bandit -ll -ii -r . -f json -o bandit-report.json || true
-      
-      - name: Upload Bandit SARIF to Security Tab
-        uses: github/codeql-action/upload-sarif@v4
-        if: always()
-        with:
-          sarif_file: sast-bandit.sarif
-          category: bandit
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
