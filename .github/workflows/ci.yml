@@ -62,18 +62,15 @@ jobs:
           path: scout-report.sarif
 
     semgrep_scan:
-      - name: Run Semgrep Scan
-        runs-on: ubuntu-latest
-        container:
+      name: Run Semgrep Scan
+      runs-on: ubuntu-latest
+      container:
         image: returntocorp/semgrep:latest
-        steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: 3.11
-      - name: Run Semgrep
-        run: semgrep scan --severity=ERROR --severity=WARNING --json --output=semgrep.json || true
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+
+        - name: Run Semgrep
+          run: semgrep scan --severity=ERROR --severity WARNING --sarif --output=sast-semgrep.sarif || true
 
    
