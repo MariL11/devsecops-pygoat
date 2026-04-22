@@ -61,16 +61,16 @@ jobs:
           name: docker-scout-findings
           path: scout-report.sarif
 
-    semgrep_scan:
-      name: Run Semgrep Scan
-      runs-on: ubuntu-latest
-      container:
-        image: returntocorp/semgrep:latest
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v4
+  semgrep_scan:
+    name: Run Semgrep Scan
+    runs-on: ubuntu-latest
+    container:
+      image: returntocorp/semgrep:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Run Semgrep
-          run: semgrep scan --severity=ERROR --severity WARNING --sarif --output=sast-semgrep.sarif || true
+      - name: Run Semgrep
+        run: semgrep scan --severity=ERROR --severity WARNING --sarif --output=sast-semgrep.sarif || true
 
    
