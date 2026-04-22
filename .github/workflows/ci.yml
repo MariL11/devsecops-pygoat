@@ -4,6 +4,9 @@ on:
   push:
   workflow_dispatch:
 
+  permissions:
+    security-events: write
+
 jobs:
   bandit_scan:
     name: Run Bandit Scan
@@ -18,8 +21,21 @@ jobs:
         with:
           python-version: 3.13
 
+      - name: Install Bandit
+        run: |
+          pip install bandit
+          pip install bandit-sarif-formatter
+
       - name: Run Bandit Scan
-        run: bandit -ll -ii -r . -f json -o bandit-report.json || true
+        run: |
+          bandit -r . -f sarif -o bandit-report.sarif -ll -ii || true
+
+      - name: Upload Bandit SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: bandit-report.sarif
+          category: bandit
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
@@ -49,6 +65,13 @@ jobs:
           command: quickview,cves
           only-severities: critical,high
           sarif-file: scout-report.sarif
+
+      - name: Upload Docker Scout SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: scout-report.sarif
+          category: docker-scout
         
 
       - name: Upload Artifact
@@ -74,4 +97,16 @@ jobs:
       - name: Run Semgrep
         run: semgrep scan --severity=ERROR --severity WARNING --sarif --output=sast-semgrep.sarif || true 
 
-   
+      - name: Upload Semgrep SARIF
+        uses: github/codeql-action/upload-sarif@v4
+        if: always()
+        with:
+          sarif_file: sast-semgrep.sarif
+          category: semgrep
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: semgrep-findings
+          path: sast-semgrep.sarif
