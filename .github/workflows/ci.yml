@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
 
-  permissions:
-    security-events: write
+permissions:
+  security-events: write
 
 jobs:
   bandit_scan:
